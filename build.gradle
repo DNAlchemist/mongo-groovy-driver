@@ -1,0 +1,37 @@
+group = 'one.chest'
+version = '0.0.1-SNAPSHOT'
+
+buildscript {
+    repositories {
+        jcenter()
+    }
+
+    dependencies {
+        classpath 'nl.javadude.gradle.plugins:license-gradle-plugin:0.10.0'
+    }
+}
+
+apply plugin: 'groovy'
+
+apply from: 'integTest.gradle'
+apply from: 'license.gradle'
+
+repositories {
+    jcenter()
+}
+
+dependencies {
+    compile 'org.slf4j:slf4j-api:1.7.25'
+    compile 'org.codehaus.groovy:groovy-all:2.4.13'
+    compile 'org.mongodb:mongo-java-driver:3.6.1'
+
+    testCompile 'org.testcontainers:testcontainers:1.5.1'
+    testCompile 'junit:junit:4.12'
+}
+
+import org.apache.tools.ant.filters.ReplaceTokens
+processResources {
+    filesMatching('**/org.codehaus.groovy.runtime.ExtensionModule') {
+        filter(ReplaceTokens, tokens: [NAME: project.name, VERSION: project.version])
+    }
+}
